@@ -1,79 +1,95 @@
 import java.awt.*;
 import java.util.*;
-public class bifurcationDiagram{
-
-   //private static double r = 1.1;
-   //private static double x = 0.0;
+public class BifurcationDiagram{
+   /**
+   *This ArrayList contains all points to be graphed
+   */
    private static ArrayList<Point> values = new ArrayList<Point>();   
+   /**
+   *This is the value that controls how accurate you wish to be. Default is +/- .001 from the actual value.
+   */
+   public static final double accuracyValue = .001;
    
+   public static final int width = 1400; //proportion width:heigth should be 4:1
+   public static final int heigth = 350;
+   /**
+   *This is the main method
+   *
+   *@param args
+   */
    public static void main(String[] args){
-      
-      DrawingPanel panel = new DrawingPanel(600,300);    //pixelValue = actualValue*100*1.5 
-      Graphics g = panel.getGraphics();
       double r = 1.1;
-      double x = 0.0;
+      double x = 0;
       
-      iterator(g,r,x);
-   }
-   
-   public static double function(double x, double r){
-      return (r*(1-x)*x);
-   }
-   
-   public static double functionDerivative(double x, double r){
-      return (r*(1-2*x));
-   }
-   
-   public static void iterator(Graphics g, double r, double x){
+      DrawingPanel panel = new DrawingPanel(width,heigth);//pixel value = actual value * 300
+      Graphics g = panel.getGraphics();
       
-      double stableX = 1-(1/r);
-      pointCreator(stableX,r);
-      for (int ii = 0; ii < values.size(); ii++){
-         int xPixel = (int)(values.get(ii).getX()*150);
-         System.out.println(xPixel);
-         int yPixel = (int)(values.get(ii).getY()*150);
-         System.out.println(300-yPixel);
-         g.drawRect(xPixel, 300-yPixel, 2,2);
+      pointCreator4(r,x);
+      graphCreator(g);
+   }
+   /**
+   *This function is the recursive solution, but turned out too be far to taxing on the computer and took 3+ hours to run on a low granularit.
+   *
+   *@param r This is the value of r
+   *@param x this is the initial value of x
+   *@param iterations This is the number of times to recurse
+   *@return This program returns the value of x given that initial x at the given value of r 
+   */
+   //THIS IS NOT USED, DO NOT USE THIS METHOD, YOU WILL DIE BEFORE IT ACTUALLY FINISHES. LITERALLY.
+   public static double function(double r, double x, int iterations){
+      if(iterations == 0){
+         System.out.println(x);
+         return r*(1-x)*x;
+      }
+      else{
+         System.out.println(iterations);
+         return r*(1-function(r,x,iterations-1))*function(r,x,iterations-1);
       }
    }
    
-   public static void pointCreator(double stableX, double r){
-      do{
-         stableX = 1-(1/r);
-         values.add(new Point((r), function(stableX, r)));
-         r+=.1;
-      }while(Math.abs(functionDerivative(stableX, r))<1);
-      int k = 5;
-      bifurcationPoints(stableX, r, k);
+   /**
+   *This is the method I ended up using to calculate the end value of x. I have recursed twice already.
+   *
+   *@param r This is the value of r
+   *@param x This is the initial value of x
+   *@return This method returnsthe value of x given the intial x at the geven value of r
+   */
+   public static double function(double r, double x){
+      //return r*(1-(r*(1-x)*x))*(r*(1-x)*x);
+      return r*(1-(r*(1-(r*(1-x)*x))*(r*(1-x)*x)))*(r*(1-(r*(1-x)*x))*(r*(1-x)*x));
+   }
+      
+   /**
+   *This method calculates the coordinates of each point, and then creates a point object using those coordinates and adds it to an ArrayList
+   *
+   *@param r This is the value of r
+   *@param x This is the initial value of x
+   */
+   public static void pointCreator4(double r, double x){
+      for(double rIncrement = r; rIncrement < 4; rIncrement+=.0001){
+         for(double xIncrement = 0.01; xIncrement < 1.0; xIncrement += .0001){
+            if(Math.abs(function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,xIncrement)))))))))))))))))))))))))))))))) - xIncrement) < accuracyValue){//This determines if the given point is part of the graph, because the output of the recursive function should be equal to the initial value of x.
+               if(!((function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,xIncrement-accuracyValue))))))))))))))))))))))))))))))))<xIncrement-accuracyValue) //The
+               && (function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement, function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,function(rIncrement,xIncrement+accuracyValue))))))))))))))))))))))))))))))))>xIncrement+accuracyValue))){//This determines if the point is part of the graph, because for each iteration only every other intersection for each value of r actually is graphed, and all of those that shouldn't be come from above the line, and exit below 
+                  values.add(new Point(rIncrement, xIncrement));
+               }
+            }
+         }
+      }
    }
    
-   public static double stableX(double r){
-      return 1-(1/r);
-   }
-   
-   public static void bifurcationPoints(double stableX, double r, int k){
-      stableX = firstStableX(r);
-      double doubleDerivative = functionDerivative(functionDerivative(stableX, r), r);
-      do{
-         values.add(new Point(r, firstStableX(r)));
-         values.add(new Point(r, secondStableX(r)));
-         double x1 = firstStableX(r);
-         double x2 = secondStableX(r);
-//         bifurcationPoints(x1,r, k-1);
-//         bifurcationPoints(x2,r, k-1);
-         r+=.1;
-      }while(Math.abs(functionDerivative(functionDerivative(stableX, r), r)) < 1 && k > 0);
-   }
-   
-//    public static double firstStableX(double r){
-//       return (Math.pow(r,2) + Math.sqrt(Math.pow(r,2) - 4*(r-1)*Math.pow(r,3)))/(2*(r-1));
-//    }
-//    
-   public static double firstStableX(double r){
-      return (-1*Math.sqrt(Math.pow(r,2) - 2*r - 3) + r + 1)/(2*r + 2);
-   }
-
-   public static double secondStableX(double r){
-      return (Math.sqrt(Math.pow(r,2) - 2*r - 3) + r + 1)/(2*r + 2);
+   /**
+   *This method graphs all of the points in the ArrayList. Commented out section draws a line at the beginning of chaotic behavior.
+   *
+   *@param g This is the graphics object that the points are printed out on
+   */
+   public static void graphCreator(Graphics g){
+      for(int ii = 0; ii < values.size(); ii += 1){
+         g.drawRect((int)(values.get(ii).getX()*(heigth)), (int)(heigth-(values.get(ii).getY()*(heigth))), 0,0);
+      }
+      /*for(int jj = 0; jj <= 600; jj++){
+         g.setColor(Color.RED);
+         g.drawRect(1070, jj,1,1);
+      }*/
    }
 }
