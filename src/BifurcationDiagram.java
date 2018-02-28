@@ -1,6 +1,13 @@
 import java.awt.*;
 import java.util.*;
 public class BifurcationDiagram{
+
+
+
+   //To show the full graph in domain (0,4), switch width and height to something with 4:1 ratio (i.e. width = 1200 height = 300), and change xShift to 0, 
+
+
+
    /**
    *This ArrayList contains all points to be graphed
    */
@@ -10,8 +17,10 @@ public class BifurcationDiagram{
    */
    public static final double accuracyValue = .001;
    
-   public static final int width = 1400; //proportion width:heigth should be 4:1
-   public static final int heigth = 350;
+   public static final int width = 1100; //proportion width:heigth should be 4:1
+   public static final int height = 1100;
+   public static final int xShift = 3300;
+
    /**
    *This is the main method
    *
@@ -21,12 +30,13 @@ public class BifurcationDiagram{
       double r = 1.1;
       double x = 0;
       
-      DrawingPanel panel = new DrawingPanel(width,heigth);//pixel value = actual value * 300
+      DrawingPanel panel = new DrawingPanel(width,height);//pixel value = actual value * 300
       Graphics g = panel.getGraphics();
       
       pointCreator4(r,x);
       graphCreator(g);
    }
+
    /**
    *This function is the recursive solution, but turned out too be far to taxing on the computer and took 3+ hours to run on a low granularit.
    *
@@ -39,7 +49,7 @@ public class BifurcationDiagram{
    public static double function(double r, double x, int iterations){
       if(iterations == 0){
          System.out.println(x);
-         return r*(1-x)*x;
+         return (r*(1-x)*x);
       }
       else{
          System.out.println(iterations);
@@ -85,7 +95,7 @@ public class BifurcationDiagram{
    */
    public static void graphCreator(Graphics g){
       for(int ii = 0; ii < values.size(); ii += 1){
-         g.drawRect((int)(values.get(ii).getX()*(heigth)), (int)(heigth-(values.get(ii).getY()*(heigth))), 0,0);
+         g.drawRect((int)(values.get(ii).getX()*(height))-xShift, (int)(height-(values.get(ii).getY()*(height))), 0,0);
       }
       /*for(int jj = 0; jj <= 600; jj++){
          g.setColor(Color.RED);
